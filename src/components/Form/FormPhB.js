@@ -2,12 +2,13 @@ import { nanoid } from 'nanoid'
 import {useFormik} from 'formik';
 import { FormPhBS, AddContact, Label } from './FormPhB.styled';
 
-import { addContact, getContacts } from "redux/contacts/contactsSlice";
+// import { addContact, getContacts } from "redux/contacts/contactsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { selectShowingContacts } from 'redux/services/selector';
 
 export const FormPhB = () => {
     const dispatch = useDispatch();
-    const contacts = useSelector(getContacts);
+    const contacts = useSelector(selectShowingContacts);
     const formik = useFormik({
       initialValues: {
         name: '',
@@ -17,13 +18,13 @@ export const FormPhB = () => {
         const contact = {
           id: nanoid(),
           name: values.name,
-          number: values.number,
+          phone: values.number,
         };
         const isName = contacts.some(contact => contact.name.toLowerCase() === values.name.toLowerCase()); 
         if (isName) {
           return alert(`${values.name} is already in contacts`);
         }
-        dispatch(addContact(contact));
+        // dispatch(addContact(contact));
         resetForm();
       },
       validate: (values) => {

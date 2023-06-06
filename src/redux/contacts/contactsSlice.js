@@ -1,31 +1,47 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+// import { persistReducer } from 'redux-persist';
+// import storage from 'redux-persist/lib/storage';
+import { addContact, delContact, fetchContacts } from "redux/services/operations";
 
-import initContacts from "../constants";
+// import initContacts from "../constants";
+const handlePendingContacts = state => { state.isLoading = true;};
+const handleRejected = ( state, { payload }) => { 
+   state.isLoading = false;
+   state.error = payload;
+};
 
 const contactsSlice = createSlice({
   name: "contacts",
   initialState: {
-   value: initContacts,
+   items: [], isLoading: false, error: null
   },
-  reducers: {
-   addContact(state, action) {
-      state.push(action.payload);
-      },
-   delContact(state, action) {
-      state.value = state.value.filter(({id}) => id !== action.payload);
-      }
-   },
-});
-const presistConfig = {
-   key: "contacts",
-   storage,
-};
+  extraReducers: builder => {
+   builder
+      //Отримати контакти
+      .addCase(fetchContacts.pending, handlePendingContacts) //старт запиту
+      .addCase(fetchContacts.fulfilled, (state, { payload }) => {//успішне завершення запиту
+         state.isLoading = false;
+         state.error = null;
+         state.items = payload;
+      })
+      .addCase(fetchContacts.rejected, handleRejected)//неуспіх звершення запиту 
+      //додати контакт
+      .addCase(addContact.pending, handlePendingContacts)
+      .addCase(addContact.fulfilled, (state, { payload }) => {
+         state.isLoading = false;
+         state.error = null;
+         state.items.push(payload);
+      })
+      .addCase(addContact.rejected, handleRejected)
+      //видалити контакт
+      .addCase(delContact.pending, handlePendingContacts)
+      .addCase(delContact.fulfilled, (state, { payload }) => {
+         state.isLoading = false;
+         state.error = null;
+         state.items = state.items.filter(el => el.id !== payload.id)
+      })
+      .addCase(delContact.rejected, handleRejected);
+   }
+  });  
 
-export const storeContactsReducer = persistReducer(
-   presistConfig, contactsSlice.reducer,
-)
-// Експортуємо генератори екшенів та редюсер
-export const { addContact, delContact } = contactsSlice.actions;
-export const getContacts = ({ contacts: { value } }) => value;
+export const contactsReducer = contactsSlice.reducer;
