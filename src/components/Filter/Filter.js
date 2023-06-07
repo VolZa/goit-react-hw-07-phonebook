@@ -1,5 +1,3 @@
-// import { Component } from 'react';
-// import PropTypes from 'prop-types'
 import { Input } from './Filter.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFilter, setValue } from 'redux/filter/filterSlice';
@@ -20,15 +18,3 @@ export const Filter = () => {
       </>
    ); 
 } 
-
-// Filter.propTypes = {
-//    filter: PropTypes.string.isRequired,
-//    onChangeInput: PropTypes.func.isRequired //f дані з інпут в State
-// };
-
-// const onChangeInputD = value => {
-//    //  setFilter(value)
-//    console.log(value)
-//  }
-//  const [filter, setFilter] = useState('');
-// onChangeInput={onChangeInputD}

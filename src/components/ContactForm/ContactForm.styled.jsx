@@ -34,11 +34,10 @@ export const ErrorMessage = styled(FormikErrorMessage)`
 
 export const Button = styled.button`
   font-size: 16px;
+  border: 1px solid ${p => p.theme.colors.black};
   :hover {
-    background-color: ${p => p.theme.colors.orange};
+    background-color: ${p => p.theme.colors.accent};
     color: ${p => p.theme.colors.white};
     box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.1);
-    border: 1px solid ${p => p.theme.colors.black};
-    border-radius: 4px;
   }
 `;

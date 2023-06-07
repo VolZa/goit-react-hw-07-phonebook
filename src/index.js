@@ -13,6 +13,7 @@ const theme = {
     primary: '#232323',
     accent: '#6085d3',
     white: '#fdfdfd',
+    black: '#000000',
   },
 };
 

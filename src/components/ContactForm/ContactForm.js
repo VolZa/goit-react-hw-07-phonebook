@@ -10,6 +10,12 @@ import {
   Title,
 } from './ContactForm.styled';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { selectContactsItems } from 'redux/services/selector';
+import { addContact } from 'redux/services/operations';
+import Notiflix from "notiflix";
+
+
 const ContactScheme = Yup.object().shape({
   name: Yup.string()
     .matches(
@@ -25,27 +31,39 @@ const ContactScheme = Yup.object().shape({
     .required('Required!'),
 });
 
-export const ContactForm = ({ onAdd }) => {
+// export const ContactForm = ({ onAdd }) => {
+export const ContactForm = () => {
+  const contacts = useSelector(selectContactsItems);
+  const dispatch = useDispatch();
+
+  const handleSubmit = ({name, number}, { resetForm}) => {
+    const contact = {
+      name,
+      phone: number,
+    }
+    const isNameInContacts = contacts.some(contact => contact.name.toLowerCase() === name.toLowerCase());
+    if (isNameInContacts) return Notiflix.Notify.failure(`${name} is already in contacts!`);
+    dispatch(addContact(contact));
+    resetForm();
+  }
+
   return (
     <div>
       <Title>Phonebook</Title>
       <Formik
         initialValues={{ name: '', number: '' }}
         validationSchema={ContactScheme}
-        onSubmit={(values, actions) => {
-          onAdd(values, values.name);
-          actions.resetForm();
-        }}
+        onSubmit={handleSubmit}
       >
-        <Form action="">
-          <FormLabel htmlFor="">
+        <Form >
+          <FormLabel>
             Name
-            <Field name="name" placeholder="Jane Smith" />
+            <Field name="name" placeholder="name" />
             <ErrorMessage name="name" component="span" />
           </FormLabel>
-          <FormLabel htmlFor="">
+          <FormLabel>
             Number
-            <Field name="number" placeholder="111-11-11" />
+            <Field name="number" placeholder="phone number" />
             <ErrorMessage name="number" component="span" />
           </FormLabel>
           <Button type="submit">Add contact</Button>
