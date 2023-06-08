@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 // import { persistReducer } from 'redux-persist';
 // import storage from 'redux-persist/lib/storage';
-import { addContact, delContact, fetchContacts } from "redux/services/operations";
+import { addContact, delContact, fetchContacts } from "redux/contacts/operations";
 
 // import initContacts from "../constants";
 const handlePendingContacts = state => { state.isLoading = true;};

@@ -2,8 +2,9 @@
 import { selectError, selectIsLoading, selectShowingContacts } from 'redux/services/selector';
 import { Contacts, Contact } from './ContactList.styled';
 import { useDispatch, useSelector } from 'react-redux';
-import { delContact, fetchContacts } from 'redux/services/operations';
+import { delContact, fetchContacts } from 'redux/contacts/operations';
 import { useEffect } from 'react';
+import { Loader } from 'components/Loader/RortationLinesLoaler';
 
 export const ContactList = () => {
    const contacts = useSelector(selectShowingContacts);
@@ -17,9 +18,8 @@ export const ContactList = () => {
 
    return (
       <Contacts>
-         { isLoading && (
-            <div>...Завантаження</div>
-         )}
+         { isLoading && <h2><Loader/></h2>}
+
          {isError && <h2>error</h2>}  
          {contacts.map(contact => {
             return(

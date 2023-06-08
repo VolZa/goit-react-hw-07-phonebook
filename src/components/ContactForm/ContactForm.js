@@ -12,7 +12,7 @@ import {
 
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContactsItems } from 'redux/services/selector';
-import { addContact } from 'redux/services/operations';
+import { addContact } from 'redux/contacts/operations';
 import Notiflix from "notiflix";
 
 
